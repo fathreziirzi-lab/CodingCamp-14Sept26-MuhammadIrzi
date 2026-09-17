@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — Expense & Budget Visualizer</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="top">
+      <div class="top__brand">
+        <span class="top__mark">Ledger</span>
+        <span class="top__tag">daily spending, kept simple</span>
+      </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg>
+        <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </header>
+
+    <section class="balance" aria-live="polite">
+      <span class="balance__label">Total balance spent</span>
+      <span class="balance__amount" id="balanceAmount">$0.00</span>
+      <span class="balance__count" id="balanceCount">0 transactions</span>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Add a transaction</h2>
+      <form id="txForm" class="form" novalidate>
+        <div class="field">
+          <label for="itemName">Item name</label>
+          <input type="text" id="itemName" name="itemName" placeholder="e.g. Grocery run" autocomplete="off">
+          <span class="field__error" id="err-itemName"></span>
+        </div>
+
+        <div class="field field--split">
+          <div class="field">
+            <label for="itemAmount">Amount</label>
+            <div class="amount-input">
+              <span class="amount-input__prefix">$</span>
+              <input type="number" id="itemAmount" name="itemAmount" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
+            </div>
+            <span class="field__error" id="err-itemAmount"></span>
+          </div>
+
+          <div class="field">
+            <label for="itemCategory">Category</label>
+            <select id="itemCategory" name="itemCategory">
+              <option value="" disabled selected>Choose…</option>
+              <option value="Food">Food</option>
+              <option value="Transport">Transport</option>
+              <option value="Fun">Fun</option>
+            </select>
+            <span class="field__error" id="err-itemCategory"></span>
+          </div>
+        </div>
+
+        <div class="field field--custom" id="customCategoryWrap" hidden>
+          <label for="customCategory">New category name</label>
+          <input type="text" id="customCategory" name="customCategory" placeholder="e.g. Health" autocomplete="off">
+          <span class="field__error" id="err-customCategory"></span>
+        </div>
+
+        <button type="button" id="addCategoryBtn" class="link-btn">+ Add custom category</button>
+
+        <button type="submit" class="submit-btn">Add transaction</button>
+      </form>
+    </section>
+
+    <section class="panel panel--chart">
+      <h2 class="panel__title">Spending by category</h2>
+      <div class="chart-wrap">
+        <svg id="spendChart" role="img" aria-label="Pie chart of spending by category" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
+        <p class="chart-empty" id="chartEmpty">Charts</p>
+      </div>
+      <ul class="legend" id="legend"></ul>
+    </section>
+
+    <section class="panel panel--list">
+      <div class="list-header">
+        <h2 class="panel__title">Transactions</h2>
+        <div class="sort-control">
+          <label for="sortSelect">Sort by</label>
+          <select id="sortSelect">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="amount-desc">Amount: high to low</option>
+            <option value="amount-asc">Amount: low to high</option>
+            <option value="category">Category</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="tx-scroll" id="txScroll">
+        <ul class="tx-list" id="txList"></ul>
+        <p class="tx-empty" id="txEmpty">No transactions yet. Add your first one above.</p>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>Stored only in this browser — nothing leaves your device.</span>
+    </footer>
+
+  </div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
